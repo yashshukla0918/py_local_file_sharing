@@ -171,7 +171,7 @@
                                         id="formFileMultiple" ></div><small>You can select
                                     multiple file
                                     here.</small><br><button
-                                    class="btn btn-outline-success my-3 outline-button-style">Upload</button>
+                                    class="btn btn-outline-success my-3 outline-button-style"  id="uploadbtn"  disabled>Upload</button>
                                 <span class="badge bg-success text-wrap">
                                     <span>Selected Folder : <small>Machine's Download Folder</small></span>
                                 </span>
@@ -206,21 +206,27 @@
         var port = window.location.port;
         var action = "http://" + ip + ":" + port + "/uploader";
         document.getElementById("from-upload").action = action; 
+
+
+ 
     </script>
 
 <script>
     
     var row_tile = document.getElementById('tbody');
     const fileInput = document.getElementById('formFileMultiple');
+    if(fileInput.files.length==0){
+            document.getElementById("uploadbtn").disabled=true;
+        }
     fileInput.onchange = () => {
         i=1;
         const selectedFiles = [...fileInput.files];
         selectedFiles.forEach(fp => {
-            console.log(fp);
             var date = new Date(fp.lastModified);
             row_tile.innerHTML = row_tile.innerHTML+"<tr><th scope='row'>"+i+"</th><td>"+fp.name+"</td><td>"+fp.type+"</td><td>"+date.toLocaleDateString("en-GB")+"</td></tr>"
             i++;
         });
+        document.getElementById("uploadbtn").disabled=false;
     }
 
 
