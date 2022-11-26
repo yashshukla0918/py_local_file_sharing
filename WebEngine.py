@@ -1,6 +1,6 @@
 import sys
 import PyQt5
-from Ip_fetcher import Local_Server
+from multimidia import Local_Server
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWebKitWidgets import QWebView , QWebPage
