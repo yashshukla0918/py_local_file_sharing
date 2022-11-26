@@ -1,0 +1,230 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Web site created using create-react-app">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="apple-touch-icon" href="/logo192.png">
+
+    <link rel="manifest" href="/manifest.json">
+
+    <title>Local File Sharing App</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+    <!-- <script defer="" src="/static/js/bundle.js"></script> -->
+
+   
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        code {
+            font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+                monospace;
+        }
+
+        /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9pbmRleC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxTQUFTO0VBQ1Q7O2NBRVk7RUFDWixtQ0FBbUM7RUFDbkMsa0NBQWtDO0FBQ3BDOztBQUVBO0VBQ0U7YUFDVztBQUNiIiwic291cmNlc0NvbnRlbnQiOlsiYm9keSB7XG4gIG1hcmdpbjogMDtcbiAgZm9udC1mYW1pbHk6IC1hcHBsZS1zeXN0ZW0sIEJsaW5rTWFjU3lzdGVtRm9udCwgJ1NlZ29lIFVJJywgJ1JvYm90bycsICdPeHlnZW4nLFxuICAgICdVYnVudHUnLCAnQ2FudGFyZWxsJywgJ0ZpcmEgU2FucycsICdEcm9pZCBTYW5zJywgJ0hlbHZldGljYSBOZXVlJyxcbiAgICBzYW5zLXNlcmlmO1xuICAtd2Via2l0LWZvbnQtc21vb3RoaW5nOiBhbnRpYWxpYXNlZDtcbiAgLW1vei1vc3gtZm9udC1zbW9vdGhpbmc6IGdyYXlzY2FsZTtcbn1cblxuY29kZSB7XG4gIGZvbnQtZmFtaWx5OiBzb3VyY2UtY29kZS1wcm8sIE1lbmxvLCBNb25hY28sIENvbnNvbGFzLCAnQ291cmllciBOZXcnLFxuICAgIG1vbm9zcGFjZTtcbn1cbiJdLCJzb3VyY2VSb290IjoiIn0= */
+    </style>
+    <style>
+        .App {
+            text-align: center;
+        }
+
+        .App-logo {
+            height: 40vmin;
+            pointer-events: none;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .App-logo {
+                animation: App-logo-spin infinite 20s linear;
+            }
+        }
+
+        .App-header {
+            background-color: #282c34;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(10px + 2vmin);
+            color: white;
+        }
+
+        .App-link {
+            color: #61dafb;
+        }
+
+        @keyframes App-logo-spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9BcHAuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQWtCO0FBQ3BCOztBQUVBO0VBQ0UsY0FBYztFQUNkLG9CQUFvQjtBQUN0Qjs7QUFFQTtFQUNFO0lBQ0UsNENBQTRDO0VBQzlDO0FBQ0Y7O0FBRUE7RUFDRSx5QkFBeUI7RUFDekIsaUJBQWlCO0VBQ2pCLGFBQWE7RUFDYixzQkFBc0I7RUFDdEIsbUJBQW1CO0VBQ25CLHVCQUF1QjtFQUN2Qiw2QkFBNkI7RUFDN0IsWUFBWTtBQUNkOztBQUVBO0VBQ0UsY0FBYztBQUNoQjs7QUFFQTtFQUNFO0lBQ0UsdUJBQXVCO0VBQ3pCO0VBQ0E7SUFDRSx5QkFBeUI7RUFDM0I7QUFDRiIsInNvdXJjZXNDb250ZW50IjpbIi5BcHAge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbi5BcHAtbG9nbyB7XG4gIGhlaWdodDogNDB2bWluO1xuICBwb2ludGVyLWV2ZW50czogbm9uZTtcbn1cblxuQG1lZGlhIChwcmVmZXJzLXJlZHVjZWQtbW90aW9uOiBuby1wcmVmZXJlbmNlKSB7XG4gIC5BcHAtbG9nbyB7XG4gICAgYW5pbWF0aW9uOiBBcHAtbG9nby1zcGluIGluZmluaXRlIDIwcyBsaW5lYXI7XG4gIH1cbn1cblxuLkFwcC1oZWFkZXIge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjgyYzM0O1xuICBtaW4taGVpZ2h0OiAxMDB2aDtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGZvbnQtc2l6ZTogY2FsYygxMHB4ICsgMnZtaW4pO1xuICBjb2xvcjogd2hpdGU7XG59XG5cbi5BcHAtbGluayB7XG4gIGNvbG9yOiAjNjFkYWZiO1xufVxuXG5Aa2V5ZnJhbWVzIEFwcC1sb2dvLXNwaW4ge1xuICBmcm9tIHtcbiAgICB0cmFuc2Zvcm06IHJvdGF0ZSgwZGVnKTtcbiAgfVxuICB0byB7XG4gICAgdHJhbnNmb3JtOiByb3RhdGUoMzYwZGVnKTtcbiAgfVxufVxuIl0sInNvdXJjZVJvb3QiOiIifQ== */
+    </style>
+    <style>
+        .dd:hover {
+            color: white;
+        }
+
+        #brand-img {
+            width: 40px;
+            height: 40px;
+        }
+
+        /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL2NvbXBvbmVudC1zdHlsZXMvaGVhZC1zdHlsZS5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Q0FDQyxZQUFZO0FBQ2I7QUFDQTtJQUNJLFdBQVc7SUFDWCxZQUFZO0FBQ2hCIiwic291cmNlc0NvbnRlbnQiOlsiLmRkOmhvdmVye1xyXG4gY29sb3I6IHdoaXRlO1xyXG59XHJcbiNicmFuZC1pbWd7XHJcbiAgICB3aWR0aDogNDBweDtcclxuICAgIGhlaWdodDogNDBweDtcclxufSJdLCJzb3VyY2VSb290IjoiIn0= */
+    </style>
+    <style>
+        #logo-mainpage {
+            height: 40%;
+            width: 40%;
+        }
+
+        @media screen and (min-width: 480px) {
+            .main-para {
+                border-radius: 0.5rem;
+            }
+
+            .paragraph {
+                font-size: 2.5vh;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .paragraph {
+                margin: 2rem;
+            }
+        }
+
+        .paragraph {
+            text-align: justify;
+        }
+
+
+        /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL2NvbXBvbmVudC1zdHlsZXMvbWFpbnBhZ2UuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksV0FBVztJQUNYLFVBQVU7QUFDZDs7QUFFQTtJQUNJO1FBQ0kscUJBQXFCO0lBQ3pCO0lBQ0E7UUFDSSxnQkFBZ0I7SUFDcEI7QUFDSjs7QUFFQTtJQUNJO0tBQ0MsWUFBWTtJQUNiO0FBQ0o7O0FBRUE7SUFDSSxtQkFBbUI7QUFDdkIiLCJzb3VyY2VzQ29udGVudCI6WyIjbG9nby1tYWlucGFnZSB7XHJcbiAgICBoZWlnaHQ6IDQwJTtcclxuICAgIHdpZHRoOiA0MCU7XHJcbn1cclxuXHJcbkBtZWRpYSBzY3JlZW4gYW5kIChtaW4td2lkdGg6IDQ4MHB4KSB7XHJcbiAgICAubWFpbi1wYXJhIHtcclxuICAgICAgICBib3JkZXItcmFkaXVzOiAwLjVyZW07XHJcbiAgICB9XHJcbiAgICAucGFyYWdyYXBoe1xyXG4gICAgICAgIGZvbnQtc2l6ZTogMi41dmg7XHJcbiAgICB9XHJcbn1cclxuXHJcbkBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDQ4MHB4KSB7XHJcbiAgICAucGFyYWdyYXBoe1xyXG4gICAgIG1hcmdpbjogMnJlbTtcclxuICAgIH0gICAgXHJcbn1cclxuXHJcbi5wYXJhZ3JhcGh7XHJcbiAgICB0ZXh0LWFsaWduOiBqdXN0aWZ5O1xyXG59XHJcblxyXG4iXSwic291cmNlUm9vdCI6IiJ9 */
+    </style>
+    <style>
+        .container-style {
+            min-height: 90vh;
+        }
+
+        .outline-button-style {
+            width: 100%;
+        }
+
+        /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL2NvbXBvbmVudC1zdHlsZXMvY29tbW9uLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLGdCQUFnQjtBQUNwQjtBQUNBO0lBQ0ksV0FBVztBQUNmIiwic291cmNlc0NvbnRlbnQiOlsiLmNvbnRhaW5lci1zdHlsZXtcclxuICAgIG1pbi1oZWlnaHQ6IDkwdmg7XHJcbn1cclxuLm91dGxpbmUtYnV0dG9uLXN0eWxle1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbn0iXSwic291cmNlUm9vdCI6IiJ9 */
+    </style>
+</head>
+
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light  border-dark border-bottom">
+            <div class="container-fluid"><a class="navbar-brand" href="/">Local File Sharing <img id="brand-img"
+                        src="/static/assets/logo192.png" alt=""></a><button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                        class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+                    <ul class="navbar-nav ">
+                        <li class="nav-item "><a class="nav-link btn  text-dark mx-2 p-1 my-2 my-sm-0 "
+                                href="/AboutUs">About App</a></li>
+                        <li class="nav-item"><a class="nav-link btn btn-outline-dark mx-2 m p-1 my-2 my-sm-0 dd"
+                                href="/Upload">Upload</a></li>
+                        <li class="nav-item "><a class="nav-link btn btn-outline-dark mx-2 p-1 my-2 my-sm-0 dd"
+                                href="/sub-components/Download">Download</a></li>
+                    </ul>
+                   
+                </div>
+            </div>
+        </nav>
+        <div class="container container-style">
+            <div class="row my-5"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <form action="uploader" id="from-upload" method="post" enctype="multipart/form-data">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h4>Chose files to upload</h4>
+                                </div>
+                                <div class="my-2"><label for="formFileMultiple" class="form-label"></label><input
+                                        type="file" multiple class="form-control" name="filemultiple"
+                                        id="formFileMultiple" ></div><small>You can select
+                                    multiple file
+                                    here.</small><br><button
+                                    class="btn btn-outline-success my-3 outline-button-style">Upload</button>
+                                <span class="badge bg-success text-wrap">
+                                    <span>Selected Folder : <small>Machine's Download Folder</small></span>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-1"></div>
+                <div class="col-sm-7" id="tiles">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Date</th>
+                          </tr>
+                        </thead>
+                        <tbody id="tbody">
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-light text-dark" style="width: 100%;">
+            <p class="text-center p-5 m-2">Copyright © Local File Sharing App <img class="m-3"
+                    src="/static/media/favicon.a3c6942dc6fccbe23793.ico" alt=""></p>
+        </footer>
+    </div>
+    <script>
+        var ip = window.location.hostname;
+        var port = window.location.port;
+        var action = "http://" + ip + ":" + port + "/uploader";
+        document.getElementById("from-upload").action = action; 
+    </script>
+
+<script>
+    
+    var row_tile = document.getElementById('tbody');
+    const fileInput = document.getElementById('formFileMultiple');
+    fileInput.onchange = () => {
+        i=1;
+        const selectedFiles = [...fileInput.files];
+        selectedFiles.forEach(fp => {
+            console.log(fp);
+            var date = new Date(fp.lastModified);
+            row_tile.innerHTML = row_tile.innerHTML+"<tr><th scope='row'>"+i+"</th><td>"+fp.name+"</td><td>"+fp.type+"</td><td>"+date.toLocaleDateString("en-GB")+"</td></tr>"
+            i++;
+        });
+    }
+
+
+</script>
+</body>
+
+</html>
