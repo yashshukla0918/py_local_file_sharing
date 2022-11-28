@@ -209,12 +209,12 @@ class Ui_Dialog(object):
         self.gridLayout.addWidget(self.OTP_label, 3, 1, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
         self.retranslateUi(Dialog)
-        self.max_connection_btn.clicked.connect(self.getMaxConnection)
+        self.max_connection_btn.clicked.connect(self.getMaxConnectionn)
         self.serv_start_btn.clicked.connect(self.run_script)
-        self.secure_tnf_chkbx.stateChanged.connect(self.generate_OTP)
+        # self.secure_tnf_chkbx.stateChanged.connect(self.setSecure)
         self.uploadPath_btn.clicked.connect(self.get_uploadPath)
         self.DownloadPath_btn.clicked.connect(self.get_downloadPath)
-
+        self.secure_tnf_chkbx.setDisabled(True)
 
 
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -226,7 +226,7 @@ class Ui_Dialog(object):
         self.url_lable_link.setText(_translate("Dialog", "Application not started yet!"))
         self.UploadPath_label.setPlaceholderText(_translate("Dialog", "Set folder path for uploading files"))
         self.DownloadPath_label.setPlaceholderText(_translate("Dialog", "Set folder path for downloadable files"))
-        self.max_connection_input.setPlaceholderText(_translate("Dialog", "Set Max client connection (eg:4) Default is : 4 [connection]"))
+        self.max_connection_input.setPlaceholderText(_translate("Dialog", "Set Max client connection (eg:4) Default is : 6 [connection]"))
         self.uploadPath_btn.setText(_translate("Dialog", "Upload Path"))
         self.DownloadPath_btn.setText(_translate("Dialog", "Download Path"))
         self.max_connection_btn.setText(_translate("Dialog", "Max Connection"))
@@ -237,13 +237,8 @@ class Ui_Dialog(object):
         self.PROCESS_STARTED = False
         
 
-    def generate_OTP(self):
-        if(self.secure_tnf_chkbx.isChecked() and self.PROCESS_STARTED == False):
-            from random import randint
-            x=''.join(["{}".format(randint(0, 9)) for num in range(0, 6)])
-            self.OTP_label.setText(x)
-        else:
-            self.OTP_label.setText("XXXXXX")
+
+
 
     def message(self,s):
         self.command_label.appendPlainText(s)
@@ -258,6 +253,7 @@ class Ui_Dialog(object):
             self.process.stateChanged.connect(self.handle_state)
             self.process.finished.connect(self.process_finished) 
             self.process.start("python",["app.py"])
+            self.getMaxConnectionn()
         else:
             pid = self.process.processId()
             kill(pid,signal.SIGINT)
@@ -280,27 +276,35 @@ class Ui_Dialog(object):
         f.setDownloadFolderPath(folder_paths)
 
 
-    def getMaxConnection(self):
+    def getMaxConnectionn(self):
         from FNF import FolderPaths
         f=FolderPaths()
-        f.setMaxConnection(self.max_connection_input.text()) 
-
-
+        conn = self.max_connection_input.text()
+        try:
+            conn=int(conn)
+            f.setMaxConnection(conn)
+        except:
+            f.setMaxConnection('4') 
 
     def handle_stderr(self):
         data = self.process.readAllStandardError()
-        stderr = bytes(data).decode("utf8")
-       
-        self.message(stderr)
+        try:
+            stderr = bytes(data).decode("utf8")
+            self.message(stderr)
+        except:
+            self.message("[----------]")
 
     def handle_stdout(self):
         data = self.process.readAllStandardOutput()
-        stdout = bytes(data).decode("utf8")
-        self.message(stdout)
+        try:
+            stdout = bytes(data).decode("utf8")
+            self.message(stdout)
+        except:
+            self.message("[----------]")
+        
 
     def handle_state(self, state):
         self.server_details = Local_Server()
-        metadata = FlushAll()
         states = {
             QProcess.NotRunning: 'Not running',
             QProcess.Starting: 'Starting',
@@ -311,27 +315,27 @@ class Ui_Dialog(object):
             self.PROCESS_STARTED = True
             self.url_lable_link.setText("http://"+str(self.server_details.HOST)+":"+str(self.server_details.PORT))
             self.serv_start_btn.setText("STOP")
-            self.secure_tnf_chkbx.setDisabled(True)
+            
             self.max_connection_input.setDisabled(True)
             self.DownloadPath_btn.setDisabled(True)
             self.uploadPath_btn.setDisabled(True)
             self.max_connection_btn.setDisabled(True)
             # metadata.ClearMetaData()
-
+        
         else:
             self.serv_start_btn.setText("START")
             self.url_lable_link.setText("Application not started yet!")
             self.PROCESS_STARTED = False
-            self.secure_tnf_chkbx.setDisabled(False)
             self.max_connection_input.setDisabled(False)
             self.DownloadPath_btn.setDisabled(False)
             self.uploadPath_btn.setDisabled(False)
             self.max_connection_btn.setDisabled(False)
-            
         
         self.message(f"Server state: {state_name}")
 
     def process_finished(self):
+        flush = FlushAll()
+        flush.ClearMetaData()
         self.message("Server : STOPED")
         self.process= None
 

@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/static/assets/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#000000">
     <meta name="description" content="Web site created using create-react-app">
@@ -18,7 +18,21 @@
         crossorigin="anonymous"></script>
     <!-- <script defer="" src="/static/js/bundle.js"></script> -->
 
-   
+    <script>
+        function getPath() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    data = this.responseText;
+                    document.getElementById('path').innerText = data;
+                }
+
+            };
+            xhttp.open("GET", "/getupPath", true);
+            xhttp.send();
+        }
+    </script>
+
     <style>
         body {
             margin: 0;
@@ -133,7 +147,7 @@
     </style>
 </head>
 
-<body>
+<body onload="getPath()">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
         <nav class="navbar navbar-expand-lg navbar-light bg-light  border-dark border-bottom">
@@ -152,7 +166,7 @@
                         <li class="nav-item "><a class="nav-link btn btn-outline-dark mx-2 p-1 my-2 my-sm-0 dd"
                                 href="/Download">Download</a></li>
                     </ul>
-                   
+
                 </div>
             </div>
         </nav>
@@ -168,12 +182,12 @@
                                 </div>
                                 <div class="my-2"><label for="formFileMultiple" class="form-label"></label><input
                                         type="file" multiple class="form-control" name="filemultiple"
-                                        id="formFileMultiple" ></div><small>You can select
+                                        id="formFileMultiple"></div><small>You can select
                                     multiple file
-                                    here.</small><br><button
-                                    class="btn btn-outline-success my-3 outline-button-style"  id="uploadbtn"  disabled>Upload</button>
+                                    here.</small><br><button class="btn btn-outline-success my-3 outline-button-style"
+                                    id="uploadbtn" disabled>Upload</button>
                                 <span class="badge bg-success text-wrap">
-                                    <span>Selected Folder : <small>Machine's Download Folder</small></span>
+                                    <span>Selected Folder : <small id="path">Machine's Download Folder</small></span>
                                 </span>
                             </div>
                         </div>
@@ -183,16 +197,16 @@
                 <div class="col-sm-7" id="tiles">
                     <table class="table">
                         <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Date</th>
-                          </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Date</th>
+                            </tr>
                         </thead>
                         <tbody id="tbody">
                         </tbody>
-                      </table>
+                    </table>
                 </div>
             </div>
         </div>
@@ -205,32 +219,32 @@
         var ip = window.location.hostname;
         var port = window.location.port;
         var action = "http://" + ip + ":" + port + "/uploader";
-        document.getElementById("from-upload").action = action; 
+        document.getElementById("from-upload").action = action;
 
 
- 
+
     </script>
 
-<script>
-    
-    var row_tile = document.getElementById('tbody');
-    const fileInput = document.getElementById('formFileMultiple');
-    if(fileInput.files.length==0){
-            document.getElementById("uploadbtn").disabled=true;
+    <script>
+
+        var row_tile = document.getElementById('tbody');
+        const fileInput = document.getElementById('formFileMultiple');
+        if (fileInput.files.length == 0) {
+            document.getElementById("uploadbtn").disabled = true;
         }
-    fileInput.onchange = () => {
-        i=1;
-        const selectedFiles = [...fileInput.files];
-        selectedFiles.forEach(fp => {
-            var date = new Date(fp.lastModified);
-            row_tile.innerHTML = row_tile.innerHTML+"<tr><th scope='row'>"+i+"</th><td>"+fp.name+"</td><td>"+fp.type+"</td><td>"+date.toLocaleDateString("en-GB")+"</td></tr>"
-            i++;
-        });
-        document.getElementById("uploadbtn").disabled=false;
-    }
+        fileInput.onchange = () => {
+            i = 1;
+            const selectedFiles = [...fileInput.files];
+            selectedFiles.forEach(fp => {
+                var date = new Date(fp.lastModified);
+                row_tile.innerHTML = row_tile.innerHTML + "<tr><th scope='row'>" + i + "</th><td>" + fp.name + "</td><td>" + fp.type + "</td><td>" + date.toLocaleDateString("en-GB") + "</td></tr>"
+                i++;
+            });
+            document.getElementById("uploadbtn").disabled = false;
+        }
 
 
-</script>
+    </script>
 </body>
 
 </html>

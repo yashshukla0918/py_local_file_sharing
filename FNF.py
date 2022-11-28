@@ -5,7 +5,7 @@ class FolderPaths:
         self.ROOT = RootFolder().getRootFolder()
         self.UPLOAD_PATH=""
         self.DOWNLOAD_PATH=""
-        self.CONN=0
+        self.CONN='0'
         try:
             with open(r'UPLOAD.txt','r+') as UP_FILE:
                 self.UPLOAD_PATH = UP_FILE.read()
@@ -18,7 +18,6 @@ class FolderPaths:
                 Connf.close()
 
         except Exception as e:
-            print(self.ROOT)
             print("Constructor ERROR:"+str(e))
             
             
@@ -28,7 +27,7 @@ class FolderPaths:
 # 
 
     def getUploadFolderPath(self):
-        if self.UPLOAD_PATH!="":
+        if str(self.UPLOAD_PATH)!="":
             return self.UPLOAD_PATH
         else:
             self.setUploadFolderPath(self.default_folder_path())
@@ -38,7 +37,7 @@ class FolderPaths:
 
 
     def getDownloadFolderPath(self):
-        if self.DOWNLOAD_PATH!="":
+        if str(self.DOWNLOAD_PATH)!="":
             return self.DOWNLOAD_PATH
         else:
             self.setDownloadFolderPath(self.default_folder_path())
@@ -50,8 +49,8 @@ class FolderPaths:
         if self.CONN!='0':
             return self.CONN
         else:
-            self.setMaxConnection(4)
-            return 4
+            self.setMaxConnection('4')
+            return '4'
 
 
 # 
@@ -60,7 +59,7 @@ class FolderPaths:
 
     def setUploadFolderPath(self,path):
         try:
-            with open(r'UPLOAD.txt','w') as UP_FILE:
+            with open(r'UPLOAD.txt','a') as UP_FILE:
                 UP_FILE.truncate()
                 UP_FILE.write(path)
                 UP_FILE.close()
@@ -71,7 +70,7 @@ class FolderPaths:
 
     def setDownloadFolderPath(self,path):
         try:
-            with open(r'DOWNLOAD.txt','w') as FILE:
+            with open(r'DOWNLOAD.txt','a') as FILE:
                 FILE.truncate()
                 FILE.write(path)
                 FILE.close()
@@ -81,19 +80,14 @@ class FolderPaths:
             
 
 
-    def setMaxConnection(self,con):
+    def setMaxConnection(self,con:str):
         try:
-            with open(r'CONNECTION.txt','w') as FILE:
+            with open(r'CONNECTION.txt','a') as FILE:
                 FILE.truncate()
                 FILE.write(con)
                 FILE.close()
         except:
             pass
-
-            
-
-
-
 
 
 # 

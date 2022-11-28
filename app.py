@@ -5,39 +5,36 @@ import os
 import sys
 
 
-def emit_error():
-   sys.stdout.write(os.getcwd()+"\n")
-   sys.stdout.flush()
-
 app = Flask(__name__,)
 app.static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates\static")
 
-from multimedia import Local_Server,DownloadHandler
-from FNF import FolderPaths
-# from multimedia import Local_Server,DownloadHandler,UploadHandler,FileChecker
-# if(FileChecker().getUploadFileStatus()):
-#    print("UPLOAD STATUS"+FileChecker().getUploadFileStatus())
-#    print("DOWNLOAD STATUS"+FileChecker().getDownloadFileStatus())
-#    upload_hndlr =UploadHandler()
-# else:
-#    upload_hndlr =UploadHandler()
+from multimedia import Local_Server
 
-# if(FileChecker().getDownloadFileStatus()):
-#    print("DOWNLOAD STATUS"+FileChecker().getDownloadFileStatus())
-#    download_hndlr = DownloadHandler(FileChecker().getDownloadFileStatus())
-# else:
-#    download_hndlr = DownloadHandler()
+from FNF import FolderPaths
+
+
 server_detail = Local_Server()
+
 folder_details = FolderPaths()
-downloader = DownloadHandler()
+
+
+
 
 @app.route('/')
 def home():
-   
-   if(server_detail.isLocal):
+   if(server_detail.isLocal ):
       return render_template('static_index.html') 
    else:  
       return render_template('index.html') 
+
+
+
+
+@app.route('/getupPath')
+def getupPath():
+   f=folder_details.getUploadFolderPath()
+   return str(f)
+
 
 
 @app.errorhandler(404)
@@ -45,18 +42,27 @@ def not_found(e):
    return render_template('error.html')
 
 
+
 @app.route('/Upload',endpoint="upload")
 def upload():
-   return render_template('upload.html')
+   if(server_detail.isLocal ):
+      return render_template('static_upload.html')
+   else:
+      return render_template('upload.html')
 
    
+
    
 @app.route('/Download',endpoint="download")
 def download():
-   return render_template('download.html')
+   if(server_detail.isLocal ):
+       return render_template("static_download.html")
+   else:
+      return render_template('download.html')
 
    
    
+
 
 @app.route('/uploader',endpoint="upload_file", methods = ['GET', 'POST'])
 def upload_file():
@@ -71,19 +77,24 @@ def upload_file():
          return render_template('failed.html')
 
 
+
 @app.route('/Files')
 def Files():
    file_list = folder_details.get_downloadable_all_files()
    return file_list
 
 
+
 @app.route('/getFiles/<file_name>')
 def getFile(file_name):
    return send_file(folder_details.getDownloadFolderPath()+"\\"+file_name) 
 
-# from os import system
-mode="prod"#"dev"
-# mode="dev"
+
+
+
+
+mode="prod"
+mode="dev"
 def runServer():
    import os
    x=os.path.join(os.path.dirname(os.path.abspath(__file__)))
@@ -94,7 +105,13 @@ def runServer():
    else:
       sys.stdout.write("Local File Sharing [ LFS ] server started\n")
       sys.stdout.flush()
-      serve(app,host=server_detail.HOST,port=server_detail.PORT,threads=int(folder_details.getMaxConnection()))
+      try:
+         thread = int(folder_details.getMaxConnection())
+      except:
+         sys.stdout.write("Invalid Max connection value given [EXPECTED an Integer]\n")
+         sys.stdout.flush()
+         thread=6
+      serve(app,host=server_detail.HOST,port=server_detail.PORT,threads=thread)
 
-     
+
 runServer() 

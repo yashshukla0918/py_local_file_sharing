@@ -41,21 +41,6 @@ class Local_Server:
             pass
 
 
-
-class DownloadHandler:
-
-    def get_downloadable_all_files(self,paths):
-        try:
-            import os
-            files = os.listdir(paths)
-            files = [f for f in files if os.path.isfile(self.path+'/'+f)] #Filtering only the files.
-            return files
-        except:
-            return []
-
-
-
-
 class FlushAll():
     def ClearMetaData(self):
         try:
@@ -77,8 +62,11 @@ class FlushAll():
         try:
             with open(r'CONNECTION.txt','w') as FILE:
                 FILE.truncate()
+                FILE.write(4)
                 FILE.close()
 
         except:
             pass
+
+
 
