@@ -30,13 +30,7 @@
                     let i=0;
                     data.forEach(element => {
                         console.log(element);
-                        th.push(`   <th><div class="card text-center m-1">
-                            <center><img src='getFiles/${element}' class=" text-center card-img-top img_cls my-2" alt="..."></center>
-                            <div class="card-body">
-                              <a href='getFiles/${element}' class="btn btn-sm btn-primary">Download</a>
-                            </div>
-                          </div></th>`);
-                          if(i%5==0 && i!=0){
+                          if(i%6==0 && i!=0){
                             st="<tr>";
                             th.forEach(element => {
                                 st=st+element;
@@ -44,8 +38,13 @@
                             st=st+"</tr>";
                             tr.push(st);
                             th=[]
-                            
                           }
+                          th.push(`   <th><div class="card text-center m-1">
+                            <center><img src='getFiles/${element}' class=" text-center card-img-top img_cls my-2" alt="..."></center>
+                            <div class="card-body">
+                              <a href='getFiles/${element}' class="btn btn-sm btn-primary" download>Download</a>
+                            </div>
+                          </div></th>`);
                           
                           i++;
                     });
