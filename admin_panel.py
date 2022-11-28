@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets 
 from PyQt5.QtCore import QProcess
-from multimedia import Local_Server,FlushAll
+from multimedia import Local_Server,FlushAll,RootFolder
 from os import kill
 import signal
 import sys
@@ -14,7 +14,8 @@ class Ui_Dialog(object):
         Dialog.setObjectName("Dialog")
         Dialog.resize(657, 350)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("C:/Users/Yash/Downloads/favicon_io/apple-touch-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        root = RootFolder().getRootFolder()
+        icon.addPixmap(QtGui.QPixmap(str(root)+r"/src/ico/fav-touch.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Dialog.setWindowIcon(icon)
         Dialog.setStyleSheet("")
         self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
@@ -264,22 +265,25 @@ class Ui_Dialog(object):
         
             
     def get_uploadPath(self):
-        from multimedia import UploadHandler
+        from FNF import FolderPaths
+        f = FolderPaths()
         folder_path = QtWidgets.QFileDialog.getExistingDirectory(QtWidgets.QMainWindow(), 'Hey! Select a File')
         self.UploadPath_label.setText(folder_path)
-        UploadHandler(folder_path)
+        f.setUploadFolderPath(folder_path)
+
 
     def get_downloadPath(self):
-        from multimedia import DownloadHandler
+        from FNF import FolderPaths
+        f = FolderPaths()
         folder_paths = QtWidgets.QFileDialog.getExistingDirectory(QtWidgets.QMainWindow(), 'Hey! Select a File')
         self.DownloadPath_label.setText(folder_paths)
-        DownloadHandler(folder_paths)
+        f.setDownloadFolderPath(folder_paths)
 
 
     def getMaxConnection(self):
-        # validate for empty input
-        # validate for number and literals
-        print(self.max_connection_input.text())
+        from FNF import FolderPaths
+        f=FolderPaths()
+        f.setMaxConnection(self.max_connection_input.text()) 
 
 
 
@@ -312,6 +316,7 @@ class Ui_Dialog(object):
             self.DownloadPath_btn.setDisabled(True)
             self.uploadPath_btn.setDisabled(True)
             self.max_connection_btn.setDisabled(True)
+            # metadata.ClearMetaData()
 
         else:
             self.serv_start_btn.setText("START")
@@ -322,7 +327,7 @@ class Ui_Dialog(object):
             self.DownloadPath_btn.setDisabled(False)
             self.uploadPath_btn.setDisabled(False)
             self.max_connection_btn.setDisabled(False)
-            metadata.ClearMetaData()
+            
         
         self.message(f"Server state: {state_name}")
 

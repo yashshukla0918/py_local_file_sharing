@@ -113,3 +113,13 @@ class FolderPaths:
             return os.path.join(os.path.expanduser('~'), 'downloads')
 
 
+    def get_downloadable_all_files(self):
+        dpath = self.getDownloadFolderPath()
+        try:
+            files = os.listdir(dpath)
+            files = [f for f in files if os.path.isfile(dpath+'/'+f)]#Filtering only the files.
+            return files
+        except:
+            return []
+
+
