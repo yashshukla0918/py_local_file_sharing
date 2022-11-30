@@ -19,47 +19,7 @@
     <!-- <script defer="" src="/static/js/bundle.js"></script> -->
 
     <script>
-        function loadDoc() {
-            
-            let tr=[];
-            let th=[];
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    data = JSON.parse(this.responseText);
-                    let i=0;
-                    data.forEach(element => {
-                        console.log(element);
-                          if(i%6==0 && i!=0){
-                            st="<tr>";
-                            th.forEach(element => {
-                                st=st+element;
-                            });
-                            st=st+"</tr>";
-                            tr.push(st);
-                            th=[]
-                          }
-                          th.push(`   <th><div class="card text-center m-1">
-                            <center><img src='getFiles/${element}' class=" text-center card-img-top img_cls my-2" alt="..."></center>
-                            <div class="card-body">
-                              <a href='getFiles/${element}' class="btn btn-sm btn-primary" download>Download</a>
-                            </div>
-                          </div></th>`);
-                          
-                          i++;
-                    });
-                    var tbody=document.getElementById('tbody');
-                    tr.push(th);
-                    tr.forEach(element => {
-                        tbody.innerHTML=tbody.innerHTML+element;
-                    });
-                    tr=[];
-                    i=0;
-                }
-            };
-            xhttp.open("GET", "/Files", true);
-            xhttp.send();
-        }
+    
     </script>
     <style>
         body {
@@ -181,7 +141,7 @@
     </style>
 </head>
 
-<body onload="loadDoc()">
+<body onload="loadDoc()" id="bodys">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
         <nav class="navbar navbar-expand-lg navbar-light bg-light  border-dark border-bottom">
@@ -205,7 +165,7 @@
             </div>
         </nav>
         <div class="container">
-            <div class="row">
+            <div class="row" id="wrap">
                 <table class="table">
                     <tbody id="tbody">
                     </tbody>
@@ -218,7 +178,66 @@
         </footer>
     </div>
     <script>
+    let START=0,END=0,SIZE=0,DATA=[];
+        function loadDoc(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    DATA = JSON.parse(this.responseText);
+                    SIZE = DATA.length;
+                    initialLoad(START,12);
+                }
+            };
+            xhttp.open("GET","/Files",true);
+            xhttp.send();
+        }
+
+
+        function initialLoad(start,end){
+            let th=[],tr=[];
+            if(START<=SIZE){
+            for(let i=start;i<end;i++){
+               if(DATA[i] != undefined){
+                if(i%3==0 && i!=0 && i<12){
+                    st = "<tr>";
+                    th.forEach(card =>{
+                        st = st+card;
+                    });
+                    st=st+"</tr>";
+                    tr.push(st);
+                    th=[];
+                }
+                th.push(`  <th><div class="card text-center m-1">
+                            <center><img src='getFiles/${DATA[i]}' class=" text-center card-img-top img_cls my-2" alt="..."></center>
+                            <div class="card-body">
+                              <a href='getFiles/${DATA[i]}' class="btn btn-sm btn-primary" download>Download</a>
+                            </div>
+                          </div></th>`);
+               }
+            }
+            var tbody=document.getElementById('tbody');
+            tr.push(th);
+            tr.forEach(element => {
+                tbody.innerHTML=tbody.innerHTML+element;
+            });
+            tr=[];
+            START =end;}
+        }
+
+        function yHandler(){
+                var wrap = document.getElementById("wrap");
+                var contentHeight = wrap.offsetHeight; //get page content Height
+                var yOffset = window.pageYOffset; //get the vertical scroll position
+                var y = yOffset + window.innerHeight;
+                if(y >= contentHeight){
+                    if(START<=SIZE-1){
+                        end=START+3;
+                    initialLoad(START,end);
         
+                    }
+                } 
+            }
+            window.onscroll = yHandler;
     </script>
 </body>
 

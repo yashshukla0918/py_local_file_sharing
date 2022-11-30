@@ -52,7 +52,7 @@ def not_found(e):
 
 @app.errorhandler(500)
 def internal_error(error):
-    return render_template('Something went wrong 500 '), 500
+    return 'Something went wrong 500 '
 
 @app.route('/Upload',endpoint="upload")
 def upload():
@@ -115,11 +115,10 @@ def runServer():
       sys.stdout.write("Local File Sharing [ LFS ] server started\n")
       sys.stdout.flush()
       try:
-         thread = __max_connection
+         thread = int(__max_connection)
       except:
          sys.stdout.write("Invalid Max connection value given [EXPECTED an Integer]\n")
          sys.stdout.flush()
-         thread=6
       serve(app,host=HOST,port=PORT,threads=thread)
 
 
