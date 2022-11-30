@@ -188,32 +188,21 @@ class Ui_Dialog(object):
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_4.addWidget(self.label_2)
-        self.secure_tnf_chkbx = QtWidgets.QCheckBox(Dialog)
-        self.secure_tnf_chkbx.setMinimumSize(QtCore.QSize(30, 20))
-        self.secure_tnf_chkbx.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.secure_tnf_chkbx.setTristate(False)
-        self.secure_tnf_chkbx.setObjectName("secure_tnf_chkbx")
-        self.horizontalLayout_4.addWidget(self.secure_tnf_chkbx)
         self.gridLayout.addLayout(self.horizontalLayout_4, 3, 0, 1, 1)
-        self.OTP_label = QtWidgets.QLabel(Dialog)
+    
         font = QtGui.QFont()
         font.setPointSize(18)
         font.setBold(True)
         font.setWeight(75)
-        self.OTP_label.setFont(font)
-        self.OTP_label.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-"color: rgb(0, 0, 0);")
-        self.OTP_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.OTP_label.setObjectName("OTP_label")
-        self.gridLayout.addWidget(self.OTP_label, 3, 1, 1, 1)
+
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
         self.retranslateUi(Dialog)
         self.max_connection_btn.clicked.connect(self.getMaxConnectionn)
         self.serv_start_btn.clicked.connect(self.run_script)
-        # self.secure_tnf_chkbx.stateChanged.connect(self.setSecure)
+      
         self.uploadPath_btn.clicked.connect(self.get_uploadPath)
         self.DownloadPath_btn.clicked.connect(self.get_downloadPath)
-        self.secure_tnf_chkbx.setDisabled(True)
+    
         self.DownloadPath_label.setText(self.database.getDownloadFolderPath())
         self.UploadPath_label.setText(str(self.database.getUploadFolderPath()))
         self.max_connection_input.setText(str(self.database.getMaxConnection()))
@@ -234,8 +223,6 @@ class Ui_Dialog(object):
         self.max_connection_btn.setText(_translate("Dialog", "Max Connection"))
         self.serv_start_btn.setText(_translate("Dialog", "START"))
         self.label_2.setText(_translate("Dialog", "[ For transferring the file make sure you are connected on same NETWORK ]"))
-        self.secure_tnf_chkbx.setText(_translate("Dialog", "Secure Transfer"))
-        self.OTP_label.setText(_translate("Dialog", "XXXXXX"))
         self.PROCESS_STARTED = False
         
 
@@ -319,8 +306,6 @@ class Ui_Dialog(object):
             self.DownloadPath_btn.setDisabled(True)
             self.uploadPath_btn.setDisabled(True)
             self.max_connection_btn.setDisabled(True)
-            # metadata.ClearMetaData()
-        
         else:
             self.serv_start_btn.setText("START")
             self.url_lable_link.setText("Application not started yet!")
@@ -333,8 +318,6 @@ class Ui_Dialog(object):
         self.message(f"Server state: {state_name}")
 
     def process_finished(self):
-        # flush = FlushAll()
-        # flush.ClearMetaData()
         self.message("Server : STOPED")
         self.process= None
 

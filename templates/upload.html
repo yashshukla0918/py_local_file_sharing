@@ -145,6 +145,11 @@
 
         /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL2NvbXBvbmVudC1zdHlsZXMvY29tbW9uLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLGdCQUFnQjtBQUNwQjtBQUNBO0lBQ0ksV0FBVztBQUNmIiwic291cmNlc0NvbnRlbnQiOlsiLmNvbnRhaW5lci1zdHlsZXtcclxuICAgIG1pbi1oZWlnaHQ6IDkwdmg7XHJcbn1cclxuLm91dGxpbmUtYnV0dG9uLXN0eWxle1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbn0iXSwic291cmNlUm9vdCI6IiJ9 */
     </style>
+    <style>
+        #upload_status{
+            display: none;
+        }
+    </style>
 </head>
 
 <body onload="getPath()">
@@ -189,6 +194,10 @@
                                 <span class="badge bg-success text-wrap">
                                     <span>Selected Folder : <small id="path">Machine's Download Folder</small></span>
                                 </span>
+                                <div id="upload_status" class="upload_status">
+                                    <br>
+                                    <img src="/static/assets/loading.gif" alt="Loading....">
+                                </div> 
                             </div>
                         </div>
                     </form>
@@ -243,6 +252,9 @@
             document.getElementById("uploadbtn").disabled = false;
         }
 
+        document.getElementById('uploadbtn').addEventListener('click',function(){
+            document.getElementById('upload_status').style.display="block";
+        });
 
     </script>
 </body>
