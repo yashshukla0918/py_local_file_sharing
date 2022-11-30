@@ -134,6 +134,8 @@
 
 <body onload="loadJSON()">
   <noscript>You need to enable JavaScript to run this app.</noscript>
+  {% if IF %}
+
   <div id="root">
     <nav class="navbar navbar-expand-lg navbar-light bg-light  border-dark border-bottom">
       <div class="container-fluid"><a class="navbar-brand" href="/">Local File Sharing <img id="brand-img"
@@ -208,8 +210,7 @@
     } 
     loadJSON();
   </script> -->
-
-
+  {% endif %}
 </body>
 
 </html>

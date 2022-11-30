@@ -1,12 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets 
 from PyQt5.QtCore import QProcess
-from multimedia import Local_Server,FlushAll,RootFolder
 from os import kill
 import signal
 import sys
-
-
-
+from db import DB , StaticData
+import psutil
 
 
 class Ui_Dialog(object):
@@ -14,8 +12,9 @@ class Ui_Dialog(object):
         Dialog.setObjectName("Dialog")
         Dialog.resize(657, 350)
         icon = QtGui.QIcon()
-        root = RootFolder().getRootFolder()
-        icon.addPixmap(QtGui.QPixmap(str(root)+r"/src/ico/fav-touch.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.database = DB()
+        self.static = StaticData()
+        icon.addPixmap(QtGui.QPixmap(str(self.static.getRootFolder())+r"/src/ico/fav-touch.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Dialog.setWindowIcon(icon)
         Dialog.setStyleSheet("")
         self.gridLayout_2 = QtWidgets.QGridLayout(Dialog)
@@ -215,6 +214,9 @@ class Ui_Dialog(object):
         self.uploadPath_btn.clicked.connect(self.get_uploadPath)
         self.DownloadPath_btn.clicked.connect(self.get_downloadPath)
         self.secure_tnf_chkbx.setDisabled(True)
+        self.DownloadPath_label.setText(self.database.getDownloadFolderPath())
+        self.UploadPath_label.setText(str(self.database.getUploadFolderPath()))
+        self.max_connection_input.setText(str(self.database.getMaxConnection()))
 
 
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -244,9 +246,11 @@ class Ui_Dialog(object):
         self.command_label.appendPlainText(s)
     
     def run_script(self):
+        self.database = DB()
         if(self.PROCESS_STARTED == False):
             self.command_label.clear()
             self.message("Starting Server......")
+            self.database.setHost()
             self.process = QProcess()
             self.process.readyReadStandardOutput.connect(self.handle_stdout)
             self.process.readyReadStandardError.connect(self.handle_stderr)
@@ -257,34 +261,31 @@ class Ui_Dialog(object):
         else:
             pid = self.process.processId()
             kill(pid,signal.SIGINT)
+            processname = "app.py"
+            for proc in psutil.process_iter():
+                if proc.name() == processname:
+                    proc.kill()
             
         
             
     def get_uploadPath(self):
-        from FNF import FolderPaths
-        f = FolderPaths()
         folder_path = QtWidgets.QFileDialog.getExistingDirectory(QtWidgets.QMainWindow(), 'Hey! Select a File')
         self.UploadPath_label.setText(folder_path)
-        f.setUploadFolderPath(folder_path)
-
+        self.database.setUploadFolderPath(folder_path)
 
     def get_downloadPath(self):
-        from FNF import FolderPaths
-        f = FolderPaths()
         folder_paths = QtWidgets.QFileDialog.getExistingDirectory(QtWidgets.QMainWindow(), 'Hey! Select a File')
         self.DownloadPath_label.setText(folder_paths)
-        f.setDownloadFolderPath(folder_paths)
+        self.database.setDownloadFolderPath(folder_paths)
 
 
     def getMaxConnectionn(self):
-        from FNF import FolderPaths
-        f=FolderPaths()
-        conn = self.max_connection_input.text()
+        conne = self.max_connection_input.text()
         try:
-            conn=int(conn)
-            f.setMaxConnection(conn)
+            conne=int(conne)
+            self.database.setMaxConnection(conne)
         except:
-            f.setMaxConnection('4') 
+            self.database.setMaxConnection(4)
 
     def handle_stderr(self):
         data = self.process.readAllStandardError()
@@ -304,7 +305,6 @@ class Ui_Dialog(object):
         
 
     def handle_state(self, state):
-        self.server_details = Local_Server()
         states = {
             QProcess.NotRunning: 'Not running',
             QProcess.Starting: 'Starting',
@@ -313,9 +313,8 @@ class Ui_Dialog(object):
         state_name = states[state]
         if(state_name=='Running'):
             self.PROCESS_STARTED = True
-            self.url_lable_link.setText("http://"+str(self.server_details.HOST)+":"+str(self.server_details.PORT))
+            self.url_lable_link.setText("http://"+str(self.database.getHOST())+":"+str(self.database.getPORT()))
             self.serv_start_btn.setText("STOP")
-            
             self.max_connection_input.setDisabled(True)
             self.DownloadPath_btn.setDisabled(True)
             self.uploadPath_btn.setDisabled(True)
@@ -334,8 +333,8 @@ class Ui_Dialog(object):
         self.message(f"Server state: {state_name}")
 
     def process_finished(self):
-        flush = FlushAll()
-        flush.ClearMetaData()
+        # flush = FlushAll()
+        # flush.ClearMetaData()
         self.message("Server : STOPED")
         self.process= None
 
