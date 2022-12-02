@@ -18,22 +18,40 @@ database = StaticData()
 
 with sqlite3.connect('LFS.db') as conn:
    __cur = conn.cursor()
-   __result = __cur.execute("select * from LFS_TABLE where ID='host' ;")
-   __result = __result.fetchall()[0]
-   __downloadFolder =str( __result[2])
-   __uploadFolder = str(__result[1])
-   __max_connection = __result[3]
-   __host_ip = str(__result[4])
-   __host_port = __result[5]
-   __isLocal = __result[6]
-   __isSecure = __result[7]
-   print(str('[message] : Application is Local Host : '+str(__isLocal)).upper())
-   print(str('[message] : Application Download Folder : '+__downloadFolder).upper())
-   print(str('[message] : Application Upload Folder : '+__uploadFolder).upper())
-   print(str('[message] : Application is Sercure : '+str(bool(__isSecure))).upper())
-   print(str('[message] : Application Max Connection : '+str(__max_connection)).upper())
-
-
+   try:
+       __result = __cur.execute("select * from LFS_TABLE where ID='host' ;")
+   except sqlite3.OperationalError :
+      os.system("type nul > LFS.db")
+      __cur.execute('''CREATE TABLE LFS_TABLE
+                (ID CHAR(6) PRIMARY KEY NOT NULL,
+                UPLOAD_FOLDER_PATH VARCHAR(500) ,
+                DOWNLOAD_FOLDER_PATH VARCHAR(500) ,
+                MAX_CONNECTION INT ,
+                HOST VARCHAR(12) ,
+                PORT INT ,
+                isLocal BOOLEAN ,
+                isSecure BOOLEAN 
+                );''')
+      try:
+         __cur.execute('''INSERT INTO LFS_TABLE (ID,UPLOAD_FOLDER_PATH,DOWNLOAD_FOLDER_PATH,MAX_CONNECTION,HOST,PORT,isLocal,isSecure) VALUES ('host',"/path", "/path",4,"127.0.0.1",1997,true,false);''')
+      except:
+         pass
+      conn.commit()
+   finally:
+      __result = __cur.execute("select * from LFS_TABLE where ID='host' ;")
+      __result = __result.fetchall()[0]
+      __downloadFolder =str( __result[2])
+      __uploadFolder = str(__result[1])
+      __max_connection = __result[3]
+      __host_ip = str(__result[4])
+      __host_port = __result[5]
+      __isLocal = __result[6]
+      __isSecure = __result[7]
+      print(str('[message] : Application is Local Host : '+str(__isLocal)).upper())
+      print(str('[message] : Application Download Folder : '+__downloadFolder).upper())
+      print(str('[message] : Application Upload Folder : '+__uploadFolder).upper())
+      print(str('[message] : Application is Sercure : '+str(bool(__isSecure))).upper())
+      print(str('[message] : Application Max Connection : '+str(__max_connection)).upper())
 
 
 
