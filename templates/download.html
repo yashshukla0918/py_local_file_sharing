@@ -2,16 +2,13 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/static/assets/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#000000">
-    <meta name="description" content="Web site created using create-react-app">
+    <meta name="description" content="Local File Sharing App">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="apple-touch-icon" href="/logo192.png">
-
-    <link rel="manifest" href="/manifest.json">
-
     <title>Local File Sharing App</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
@@ -19,7 +16,7 @@
     <!-- <script defer="" src="/static/js/bundle.js"></script> -->
 
     <script>
-    
+
     </script>
     <style>
         body {
@@ -134,7 +131,7 @@
         /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3NyYy9jb21wb25lbnRzL2NvbXBvbmVudC1zdHlsZXMvY29tbW9uLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLGdCQUFnQjtBQUNwQjtBQUNBO0lBQ0ksV0FBVztBQUNmIiwic291cmNlc0NvbnRlbnQiOlsiLmNvbnRhaW5lci1zdHlsZXtcclxuICAgIG1pbi1oZWlnaHQ6IDkwdmg7XHJcbn1cclxuLm91dGxpbmUtYnV0dG9uLXN0eWxle1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbn0iXSwic291cmNlUm9vdCI6IiJ9 */
     </style>
     <style>
-        .img_cls{
+        .img_cls {
             height: 100px;
             width: 100px;
         }
@@ -154,7 +151,8 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
                     <ul class="navbar-nav ">
                         <li class="nav-item "><a class="nav-link btn  text-dark mx-2 p-1 my-2 my-sm-0 "
-                                href="/AboutUs">About App</a></li>
+                                href="https://yashshukla0918.github.io/MyPortflio/" target="_blank">About Us</a></li>
+
                         <li class="nav-item"><a class="nav-link btn btn-outline-dark mx-2 m p-1 my-2 my-sm-0 dd"
                                 href="/Upload">Upload</a></li>
                         <li class="nav-item "><a class="nav-link btn btn-outline-dark mx-2 p-1 my-2 my-sm-0 dd"
@@ -178,66 +176,74 @@
         </footer>
     </div>
     <script>
-    let START=0,END=0,SIZE=0,DATA=[];
-        function loadDoc(){
+        let EXTENTION = ['jpg', 'jpeg', 'png', 'mp4', 'gif', "aif", "mp3", "wav", "ai", "bmp", "gif", "ico", 'tif', "tiff", "svg", "mov", "heic"];
+        let START = 0, END = 0, SIZE = 0, DATA = [];
+        function loadDoc() {
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function(){
-                if(this.readyState == 4 && this.status == 200){
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
                     DATA = JSON.parse(this.responseText);
                     SIZE = DATA.length;
-                    initialLoad(START,12);
+                    initialLoad(START, 12);
                 }
             };
-            xhttp.open("GET","/Files",true);
+            xhttp.open("GET", "/Files", true);
             xhttp.send();
         }
 
 
-        function initialLoad(start,end){
-            let th=[],tr=[];
-            if(START<=SIZE){
-            for(let i=start;i<end;i++){
-               if(DATA[i] != undefined){
-                if(i%3==0 && i!=0 && i<12){
-                    st = "<tr>";
-                    th.forEach(card =>{
-                        st = st+card;
-                    });
-                    st=st+"</tr>";
-                    tr.push(st);
-                    th=[];
-                }
-                th.push(`  <th><div class="card text-center m-1">
+        function initialLoad(start, end) {
+            let th = [], tr = [];
+            if (START <= SIZE) {
+                for (let i = start; i < end; i++) {
+                    if (DATA[i] != undefined) {
+                        if (i % 3 == 0 && i != 0 && i < 12) {
+                            st = "<tr>";
+                            th.forEach(card => {
+                                st = st + card;
+                            });
+                            st = st + "</tr>";
+                            tr.push(st);
+                            th = [];
+                        }
+                        let arr = DATA[i].split(".");
+                        let view = "";
+                        if (EXTENTION.includes(arr[arr.length - 1].toString().toLowerCase())) {
+                            view = `<a href='/getFiles/${DATA[i]}' class="btn btn-sm btn-danger my-1" >View</a>`;
+                        }
+                        th.push(`  <th><div class="card text-center m-1">
                             <center><img src='getFiles/${DATA[i]}' class=" text-center card-img-top img_cls my-2" alt="..."></center>
                             <div class="card-body">
                               <a href='getFiles/${DATA[i]}' class="btn btn-sm btn-primary" download>Download</a>
+                              ${view}
                             </div>
                           </div></th>`);
-               }
+                    }
+                }
+                var tbody = document.getElementById('tbody');
+                tr.push(th);
+                tr.forEach(element => {
+                    tbody.innerHTML = tbody.innerHTML + element;
+                });
+                tr = [];
+                START = end;
             }
-            var tbody=document.getElementById('tbody');
-            tr.push(th);
-            tr.forEach(element => {
-                tbody.innerHTML=tbody.innerHTML+element;
-            });
-            tr=[];
-            START =end;}
         }
 
-        function yHandler(){
-                var wrap = document.getElementById("wrap");
-                var contentHeight = wrap.offsetHeight; //get page content Height
-                var yOffset = window.pageYOffset; //get the vertical scroll position
-                var y = yOffset + window.innerHeight;
-                if(y >= contentHeight){
-                    if(START<=SIZE-1){
-                        end=START+3;
-                    initialLoad(START,end);
-        
-                    }
-                } 
+        function yHandler() {
+            var wrap = document.getElementById("wrap");
+            var contentHeight = wrap.offsetHeight; //get page content Height
+            var yOffset = window.pageYOffset; //get the vertical scroll position
+            var y = yOffset + window.innerHeight;
+            if (y >= contentHeight) {
+                if (START <= SIZE - 1) {
+                    end = START + 3;
+                    initialLoad(START, end);
+
+                }
             }
-            window.onscroll = yHandler;
+        }
+        window.onscroll = yHandler;
     </script>
 </body>
 

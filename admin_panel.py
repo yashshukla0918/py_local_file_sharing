@@ -5,6 +5,7 @@ import signal
 import sys
 from db import DB , StaticData
 import psutil
+import pyperclip
 
 
 class Ui_Dialog(object):
@@ -35,16 +36,17 @@ class Ui_Dialog(object):
         self.label.setOpenExternalLinks(False)
         self.label.setObjectName("label")
         self.horizontalLayout_3.addWidget(self.label)
-        self.url_lable_link = QtWidgets.QLabel(Dialog)
+        self.url_lable_link = QtWidgets.QLineEdit(Dialog)
         self.url_lable_link.setEnabled(True)
         self.url_lable_link.setMinimumSize(QtCore.QSize(500, 30))
         self.url_lable_link.setMaximumSize(QtCore.QSize(16777215, 30))
         self.url_lable_link.setStyleSheet("color: rgb(0, 0, 0);\n"
 "background-color: rgb(255, 255, 255);\n"
 "font: 10pt \"Verdana\";")
-        self.url_lable_link.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        # self.url_lable_link.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.url_lable_link.setAlignment(QtCore.Qt.AlignCenter)
-        self.url_lable_link.setOpenExternalLinks(True)
+        self.url_lable_link.setReadOnly(True)
+        # self.url_lable_link.setOpenExternalLinks(True)
         self.url_lable_link.setObjectName("url_lable_link")
         self.horizontalLayout_3.addWidget(self.url_lable_link)
         self.gridLayout.addLayout(self.horizontalLayout_3, 2, 0, 1, 2)
@@ -227,7 +229,8 @@ class Ui_Dialog(object):
         
 
 
-
+    def copy_link(self):
+        pass
 
     def message(self,s):
         self.command_label.appendPlainText(s)

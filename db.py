@@ -60,8 +60,6 @@ class DB:
             
 
 
-
-
     def __RUN_STATEMENT(self,data):
         c = self.conn.cursor()
         __data = c.execute("SELECT "+data+" FROM LFS_TABLE WHERE ID='host';")
@@ -76,10 +74,10 @@ class DB:
 
 
     def __INSERT_AND_UPDATE(self,*args):
-            c = self.conn.cursor()
-            c.execute(args[0])
-            self.conn.commit()
-            print(str('[success] : set '+args[1]+' to '+str(args[2])).upper())
+        c = self.conn.cursor()
+        c.execute(args[0])
+        self.conn.commit()
+        print(str('[success] : set '+args[1]+' to '+str(args[2])).upper())
 
         
 

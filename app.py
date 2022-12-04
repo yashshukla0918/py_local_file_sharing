@@ -47,6 +47,7 @@ with sqlite3.connect('LFS.db') as conn:
       __host_port = __result[5]
       __isLocal = __result[6]
       __isSecure = __result[7]
+      print(str('[message] : Application is active on : http://'+str(__host_ip)+":"+str(__host_port)).upper())
       print(str('[message] : Application is Local Host : '+str(__isLocal)).upper())
       print(str('[message] : Application Download Folder : '+__downloadFolder).upper())
       print(str('[message] : Application Upload Folder : '+__uploadFolder).upper())
@@ -57,11 +58,10 @@ with sqlite3.connect('LFS.db') as conn:
 
 @app.route('/')
 def home():
-      return render_template('index.html', IF = __isLocal) 
-   
+   return render_template('index.html')
+
 @app.route('/getupPath')
 def getupPath():
-  #folder_details.getUploadFolderPath()
    return str(__uploadFolder)
 
 @app.errorhandler(404)
@@ -74,23 +74,23 @@ def internal_error(error):
 
 @app.route('/Upload',endpoint="upload")
 def upload():
-   if(__isLocal == False):
-      return render_template('static_upload.html')
-   else:
-      return render_template('upload.html')
+   return render_template('upload.html')
 
       
 @app.route('/Download',endpoint="download")
 def download():
-   if(__isLocal == False):
-       return render_template("static_download.html")
-   else:
-      return render_template('download.html')
+   return render_template('download.html')
 
 
 @app.route('/uploader',endpoint="upload_file", methods = ['GET', 'POST'])
 def upload_file():
    os.chdir(__uploadFolder)
+   if(os.path.exists(__uploadFolder+"/LFS") == False):
+      os.mkdir("LFS")
+   os.chdir(__uploadFolder+"/LFS")
+   if(os.path.exists(__uploadFolder+"/LFS/"+str(request.remote_addr)) == False):
+      os.mkdir(str(request.remote_addr))
+   os.chdir(__uploadFolder+"/LFS/"+request.remote_addr)
    if request.method == 'POST':
       files = request.files.getlist('filemultiple') 
       if(files):
