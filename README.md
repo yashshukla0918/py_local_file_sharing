@@ -15,7 +15,7 @@
 </p>
 <p>
   ## Production Application (in .exe) File
-  `<a href="#">Link to Application</a>
+  <a href="#">Link to Application</a>
   
   ## For contribution
   Steps 🦖
