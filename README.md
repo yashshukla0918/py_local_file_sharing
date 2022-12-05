@@ -1,1 +1,1 @@
-# py_local_file_sharing
+# Local File Sharing [LFS]
