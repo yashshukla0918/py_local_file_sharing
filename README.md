@@ -12,10 +12,14 @@
 <p><br><br><br>
   >>> LFS Application is file sharing application which provide flexibility to download and upload files simultaneously.<br>
   >>> For " N " number of users.
+  <br><br>
+  ## Works for Windows , Linux , iOS , Android etc.
+  <br>
+  Note :- server application runs only on windows
 </p>
 <p>
   ## Production Application (in .exe) File
-  <a href="#">Link to Application</a>
+  <a href="https://drive.google.com/file/d/1RwWeVH-lzYSgdw25h9ft1IZ1lKYxSC0S/view?usp=sharing">Link to Application</a>
   
   ## For contribution
   Steps 🦖
