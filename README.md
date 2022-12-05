@@ -9,3 +9,20 @@
   <img src="https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white" alt="Sqlite">
   <img src="https://img.shields.io/badge/Shell_Script-121011?style=for-the-badge&logo=gnu-bash&logoColor=whit" alt="Shell Script"> 
 </div>
+<p><br><br><br>
+  >>> LFS Application is file sharing application which provide flexibility to download and upload files simultaneously.<br>
+  >>> For " N " number of users.
+</p>
+<p>
+  ## Production Application (in .exe) File
+  `<a href="#">Link to Application</a>
+  
+  ## For contribution
+  Steps 🦖
+  <pre>
+  1. Clone the project
+  2. Create a virtaul environment (C:\folder_name : virtualenv . )
+  3. Install dependencies (  C:\folder_name: python -m pip install -r requirements.txt   )
+  4. Run application : python admin_panel.py
+  </pre>
+</p>
