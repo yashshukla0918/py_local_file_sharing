@@ -151,7 +151,7 @@ def internal_error(error):
 
 @app.route('/Upload',endpoint="upload")
 def upload():
-   if(str(request.remote_addr)):
+   if(getClientAuth(request.remote_addr)):
       return render_template('upload.html')
    return redirect('/')    
 
@@ -159,7 +159,7 @@ def upload():
 
 @app.route('/Download',endpoint="download")
 def download():
-   if(str(request.remote_addr)):
+   if(getClientAuth(request.remote_addr)):
       return render_template('download.html')
    return redirect('/')
 
@@ -167,7 +167,7 @@ def download():
 
 @app.route('/uploader',endpoint="upload_file", methods = ['GET', 'POST'])
 def upload_file():
-   if(str(request.remote_addr)):
+   if(getClientAuth(request.remote_addr)):
       os.chdir(__uploadFolder)
       if(os.path.exists(__uploadFolder+"/LFS") == False):
          os.mkdir("LFS")
@@ -188,7 +188,7 @@ def upload_file():
 
 @app.route('/Files')
 def Files():
-   if(str(request.remote_addr)):
+   if(getClientAuth(request.remote_addr)):
       file_list = database.get_downloadable_all_files() #folder_details.get_downloadable_all_files()
       return file_list
    return redirect('/')
@@ -196,7 +196,7 @@ def Files():
 
 @app.route('/getFiles/<file_name>')
 def getFile(file_name):
-   if(str(request.remote_addr)):
+   if(getClientAuth(request.remote_addr)):
       return send_file(__downloadFolder+"\\"+file_name) 
    return redirect('/')
 
@@ -215,7 +215,7 @@ def getConnectionList():
 
 @app.route('/remove/<ip>')
 def removeUser(ip):
-   if(str(request.remote_addr)):
+   if(str(request.remote_addr) == __host_ip):
       with sqlite3.connect("LFS.db") as conn:
          try:
             __cur = conn.cursor()
@@ -230,7 +230,7 @@ def removeUser(ip):
 
 @app.route('/saveName/<ip>/<name>')
 def saveName(ip,name):
-   if(str(request.remote_addr)):
+   if(str(request.remote_addr)== __host_ip):
       with sqlite3.connect("LFS.db") as conn:
          try:
             __cur = conn.cursor()
