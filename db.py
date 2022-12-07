@@ -16,11 +16,73 @@ class DB:
         finally:
             self.conn = sqlite3.connect('LFS.db')
         self.__check_table_exists()
+        self.__check_otp_table_exists()
+        self.__check_ip_table_exists()
+
+
+
+    def __check_otp_table_exists(self):
+        c = self.conn.cursor()
+        c.execute('''SELECT count(name) FROM sqlite_master WHERE type='table' AND name='LFS_OTP' ''')
+        if (c.fetchone()[0]!=1): 
+            try:
+                c.execute('''CREATE TABLE LFS_OTP (ID CHAR(6) PRIMARY KEY NOT NULL, OTP CHAR(6) );''')
+                self.__CHECK_OTP_VALUE()
+                self.conn.commit()
+            except Exception as e:
+                print(str('[ERROR] : Something went wrong with create OTP docs :( ').upper())
+                print("[ERROR] : "+str(e).upper())
+
+
+
+    def __CHECK_OTP_VALUE(self):
+        __c = self.conn.cursor()
+        try:
+            __statment = "select OTP from LFS_OTP where ID='client';"
+            res=__c.execute(__statment)
+            if(bool(res.fetchone()) == False):
+                __c.execute('''INSERT INTO LFS_OTP (ID,OTP) VALUES ('client','123456');''')
+                self.conn.commit()
+        except Exception as e:
+            print(str("[ERROR] : "+str(e)).upper())
+
+
+
+
+    
+    def __check_ip_table_exists(self):
+        c = self.conn.cursor()
+        c.execute('''SELECT count(name) FROM sqlite_master WHERE type='table' AND name='LFS_CLIENT'; ''')
+        if (c.fetchone()[0]!=1): 
+            try:
+                c.execute('''CREATE TABLE LFS_CLIENT (IP CHAR(13) PRIMARY KEY NOT NULL , NAME VARCHAR(50));''')
+                self.__CHECK_IP_VALUE()
+                self.conn.commit()
+            except Exception as e:
+                print(str('[ERROR] : Something went wrong with create client docs :( ').upper())
+                print("[ERROR] : "+str(e).upper())
+
+
+
+    def __CHECK_IP_VALUE(self):
+        __c = self.conn.cursor()
+        try:
+            __statment = "select NAME from LFS_CLIENT where IP='0.0.0.0';"
+            res=__c.execute(__statment)
+            if(bool(res.fetchone()) == False):
+                __c.execute('''INSERT INTO LFS_CLIENT (IP,NAME) VALUES ('0.0.0.0','localhost');''')
+                self.conn.commit()
+        except Exception as e:
+            print(str("[ERROR] : "+str(e)).upper())
+          
+
+
+
 
 
     def __check_table_exists(self):
         c = self.conn.cursor()
-        c.execute('''SELECT count(name) FROM sqlite_master WHERE type='table' AND name='LFS_TABLE' ''')
+        c.execute('''SELECT count(name) FROM sqlite_master WHERE type='table' AND name='LFS_TABLE'; ''')
         if (c.fetchone()[0]==1): 
             print('[SUCCESS] : DATABASE CONNECTED SUCCESSFULLY!  ')
         else:
@@ -55,7 +117,7 @@ class DB:
                 __c.execute('''INSERT INTO LFS_TABLE (ID,UPLOAD_FOLDER_PATH,DOWNLOAD_FOLDER_PATH,MAX_CONNECTION,HOST,PORT,isLocal,isSecure) VALUES ('host',"'''+str(path)+'''", "'''+str(path)+'''",4,"127.0.0.1",1997,true,false);''')
                 self.conn.commit()
         except Exception as e:
-            print(str("[ERROR] : "+e).upper())
+            print(str("[ERROR] : "+str(e)).upper())
     
             
 
@@ -214,7 +276,10 @@ class DB:
                 __Statement = f"UPDATE LFS_TABLE SET isSecure= '{isSecure}' WHERE ID='host';"
                 self.__INSERT_AND_UPDATE(__Statement,"Secure Transfer",isSecure)
 
-                
+    def setOTP(self,OTP=''):
+            if(OTP!=''):
+                __Statement = f"UPDATE LFS_OTP SET OTP = '{OTP}' WHERE ID='client';"
+                self.__INSERT_AND_UPDATE(__Statement," OTP ",OTP)             
 
 
     def default_folder_path(self):

@@ -1,0 +1,119 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="/static/assets/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/static/bootstrap.css">
+        <script src="/static/bootstrap.js"></script>
+    <title>Connected Device | Admin</title>
+    <script>
+        function getConnection(){
+            var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        DATA = JSON.parse(this.responseText);
+                        var list = document.getElementById("list")
+                        if(DATA != undefined){
+                        DATA.forEach(client => {
+                           list.innerHTML=list.innerHTML+`<li class="list-group-item d-flex" >
+                        <div class="input-group ">
+                            <input type="text" value="${client[1]}" id="${client[0]}-name" class="form-control text-center" placeholder="Name" aria-label="Recipient's username with two button addons" disabled>
+                            <input type="text" value="${client[0]}" id="${client[0]}-ip" class="form-control text-center" placeholder="Ip Address" aria-label="Recipient's username with two button addons" disabled>
+                            <input class="btn btn-outline-primary" onclick="editName(this.id)" id="${client[0]}-edit" type="button" value="Edit Name">
+                            <input type="hidden" onclick="saveName(this.id)" id="${client[0]}-save" value="Save Name" class="btn btn-outline-success">
+                            <input type="hidden" onclick="cancel(this.id)" id="${client[0]}-cancel" value="Cancel" class="text-dark btn btn-outline-warning">
+                            <input class="btn btn-outline-danger" id="${client[0]}-del" type="button" onclick="RemoveUser(this.id)" value="Remove">
+                          </div>
+                      </li>`;
+                        });
+                    }
+                        
+                    }
+                };
+                xhttp.open("GET", "/getCon", true);
+                xhttp.send();
+        }
+        function editName(button){
+            let ip = button.split('-')[0];
+            document.getElementById(ip+"-name").disabled=false;
+            document.getElementById(ip+"-edit").type="hidden";
+            document.getElementById(ip+"-save").type="button";
+            document.getElementById(ip+"-cancel").type="button";
+
+    }
+    function cancel(button){
+        let ip = button.split('-')[0];
+        document.getElementById(ip+"-name").disabled=true;
+        document.getElementById(ip+"-edit").type="button";
+        document.getElementById(ip+"-save").type="hidden";
+        document.getElementById(ip+"-cancel").type="hidden";
+    }
+    function saveName(button){
+        let ip = button.split('-')[0];
+        let new_name = document.getElementById(ip+"-name").value;
+        if(confirm("Do you want to change name to : "+new_name)==true){
+            var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if(this.responseText=='1'){
+                            window.location.reload();
+                        }
+                        else{
+                            alert("Something went wrong :( ")
+                        }
+                    }    
+                    };
+                xhttp.open("GET", "/saveName/"+ip+"/"+new_name, true);
+                xhttp.send();
+        }
+    }
+
+
+    function RemoveUser(button){
+        let ip = button.split('-')[0];
+        if(confirm("Do you want to remove : "+ip)== true){
+            var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if(this.responseText=='1'){
+                            window.location.reload();
+                        }
+                        else{
+                            alert("Something went wrong :( ")
+                        }
+                    }
+                    };
+                xhttp.open("GET", "/remove/"+ip, true);
+                xhttp.send();
+        }
+    }
+    </script>
+</head>
+
+<body onload="getConnection()" >
+   <div class="container">
+    <div class="row my-5"></div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <center>
+                <div class="card py-2 px-3" style="width:100%">
+                    <ul class="list-group list-group-flush" id="list"></ul>
+                  </div>
+            </center>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+   </div>
+</body>
+<script>
+
+</script>
+</html>
